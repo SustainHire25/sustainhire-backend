@@ -9,12 +9,17 @@ const fs = require('fs'); // For folder creation
 require('dotenv').config(); // Load .env variables
 
 // ⚡ CORS configuration to allow your Netlify front-end
+
+
 const corsOptions = {
-  origin: "https://sustainhireenterprise.netlify.app/", // Replace with your actual front-end URL
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: "https://sustainhireenterprise.netlify.app", // your Netlify frontend
+  methods: ["GET","POST","PUT","DELETE"],
   credentials: true
 };
+
 app.use(cors(corsOptions));
+
+
 
 // Middleware for parsing JSON and URL-encoded data
 app.use(express.json());
