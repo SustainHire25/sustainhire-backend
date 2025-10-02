@@ -8,8 +8,15 @@ const multer = require('multer');
 const fs = require('fs'); // Required for folder creation
 require('dotenv').config(); // Load .env variables
 
+// ⚡ CORS configuration to allow your Netlify front-end
+const corsOptions = {
+  origin: "https://sustainhire2025.netlify.app", // replace with your actual front-end URL
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+};
+app.use(cors(corsOptions));
+
 // Middleware
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -27,7 +34,6 @@ const storage = multer.diskStorage({
     cb(null, uniqueName);
   }
 });
-
 const upload = multer({ storage });
 
 // --- MongoDB connection ---
@@ -66,7 +72,7 @@ const internshipSchema = new mongoose.Schema({
   submittedAt: { type: Date, default: Date.now }
 });
 
-// ⚡ Key fix: force collection name to exactly 'internship'
+// ⚡ Force MongoDB collection name to exactly 'internship'
 const Internship = mongoose.model('Internship', internshipSchema, 'internship');
 
 // Routes
