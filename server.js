@@ -5,18 +5,18 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const path = require('path');
 const multer = require('multer');
-const fs = require('fs'); // Required for folder creation
+const fs = require('fs'); // For folder creation
 require('dotenv').config(); // Load .env variables
 
 // ⚡ CORS configuration to allow your Netlify front-end
 const corsOptions = {
-  origin: "https://sustainhire2025.netlify.app", // replace with your actual front-end URL
+  origin: "https://sustainhireenterprise.netlify.app/", // Replace with your actual front-end URL
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 };
 app.use(cors(corsOptions));
 
-// Middleware
+// Middleware for parsing JSON and URL-encoded data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -40,10 +40,10 @@ const upload = multer({ storage });
 const MONGO_URI = process.env.MONGO_URI;
 
 mongoose.connect(MONGO_URI)
-  .then(() => console.log("✅ MongoDB connected successfully"))
-  .catch(err => console.error("❌ MongoDB connection error:", err));
+  .then(() => console.log(" MongoDB connected successfully"))
+  .catch(err => console.error(" MongoDB connection error:", err));
 
-// Schema & Model
+// --- Schema & Model ---
 const internshipSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   email: { type: String, required: true },
@@ -75,7 +75,7 @@ const internshipSchema = new mongoose.Schema({
 // ⚡ Force MongoDB collection name to exactly 'internship'
 const Internship = mongoose.model('Internship', internshipSchema, 'internship');
 
-// Routes
+// --- Routes ---
 app.post('/api/internship/apply', upload.single('resume'), async (req, res) => {
   try {
     const data = req.body;
@@ -88,16 +88,16 @@ app.post('/api/internship/apply', upload.single('resume'), async (req, res) => {
       resume: req.file ? req.file.path : ""
     });
 
-    console.log("📥 Saving application:", application);
+    console.log(" Saving application:", application);
 
     await application.save();
     res.status(201).json({ message: "Application submitted successfully!" });
   } catch (err) {
-    console.error("❌ Error saving application:", err);
+    console.error(" Error saving application:", err);
     res.status(500).json({ error: "Error saving application", details: err.message });
   }
 });
 
-// Start server
+// --- Start server ---
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(` Server running on port ${PORT}`));
